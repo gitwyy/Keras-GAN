@@ -13,7 +13,7 @@ from __future__ import print_function, division
 import scipy
 
 from keras.datasets import mnist
-from keras_contrib.layers.normalization import InstanceNormalization
+from keras_contrib.layers.normalization.instancenormalization import InstanceNormalization
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout, Concatenate
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D, Add
 from keras.layers.advanced_activations import PReLU, LeakyReLU
@@ -142,7 +142,7 @@ class SRGAN():
         c1 = Activation('relu')(c1)
 
         # Propogate through residual blocks
-        r = residual_block(c1)
+        r = residual_block(c1, 64)
         for _ in range(self.n_residual_blocks - 1):
             r = residual_block(r, self.gf)
 
@@ -266,6 +266,7 @@ class SRGAN():
             fig = plt.figure()
             plt.imshow(imgs_lr[i])
             fig.savefig('images/%s/%d_lowres%d.png' % (self.dataset_name, epoch, i))
+            plt.show()
             plt.close()
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 mkdir datasets
 FILE=$1
 URL=https://people.eecs.berkeley.edu/~tinghuiz/projects/pix2pix/datasets/$FILE.tar.gz

@@ -1,6 +1,7 @@
 from __future__ import print_function, division
 
 from keras.datasets import mnist
+from keras.datasets import cifar10
 from keras.layers import Input, Dense, Reshape, Flatten, Dropout
 from keras.layers import BatchNormalization, Activation, ZeroPadding2D
 from keras.layers.advanced_activations import LeakyReLU
@@ -16,9 +17,9 @@ import numpy as np
 
 class GAN():
     def __init__(self):
-        self.img_rows = 28
-        self.img_cols = 28
-        self.channels = 1
+        self.img_rows = 32
+        self.img_cols = 32
+        self.channels = 3
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
         self.latent_dim = 100
 
@@ -92,12 +93,13 @@ class GAN():
     def train(self, epochs, batch_size=128, sample_interval=50):
 
         # Load the dataset
-        (X_train, _), (_, _) = mnist.load_data()
-
+        # (X_train, _), (_, _) = mnist.load_data()
+        (X_train, _), (_, _) = cifar10.load_data()
+        print(X_train.shape)
         # Rescale -1 to 1
         X_train = X_train / 127.5 - 1.
-        X_train = np.expand_dims(X_train, axis=3)
-
+        # X_train = np.expand_dims(X_train, axis=3)
+        print(X_train.shape)
         # Adversarial ground truths
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
@@ -132,7 +134,7 @@ class GAN():
             g_loss = self.combined.train_on_batch(noise, valid)
 
             # Plot the progress
-            print ("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
+            print("%d [D loss: %f, acc.: %.2f%%] [G loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
 
             # If at save interval => save generated image samples
             if epoch % sample_interval == 0:
@@ -150,9 +152,10 @@ class GAN():
         cnt = 0
         for i in range(r):
             for j in range(c):
-                axs[i,j].imshow(gen_imgs[cnt, :,:,0], cmap='gray')
+                axs[i,j].imshow(gen_imgs[cnt, :, :, :])
                 axs[i,j].axis('off')
                 cnt += 1
+        plt.show()
         fig.savefig("images/%d.png" % epoch)
         plt.close()
 

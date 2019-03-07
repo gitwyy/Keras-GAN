@@ -7,5 +7,5 @@
 *.hdf5
 .DS_Store
 */datasets
-
+.idea/
 __pycache__

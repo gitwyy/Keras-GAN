@@ -190,6 +190,7 @@ class ACGAN():
                 axs[i,j].axis('off')
                 cnt += 1
         fig.savefig("images/%d.png" % epoch)
+        plt.show()
         plt.close()
 
     def save_model(self):
